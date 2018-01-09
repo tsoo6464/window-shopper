@@ -12,6 +12,28 @@ import UIKit
 @IBDesignable
 class CurrencyTxtField: UITextField {
     
+    override func draw(_ rect: CGRect) {
+        let size: CGFloat = 20
+        let currencyLbl = UILabel(frame: CGRect(x: 5, y: (frame.size.height / 2) - (size / 2), width: size, height: size))
+        print("\(frame.size.height)")
+        currencyLbl.backgroundColor = #colorLiteral(red: 0.8819576414, green: 0.8819576414, blue: 0.8819576414, alpha: 0.7987478596)
+        currencyLbl.textAlignment = .center
+        currencyLbl.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        //以下兩個要共同使用 否則效果不會出現
+        currencyLbl.layer.cornerRadius = 5.0
+        currencyLbl.clipsToBounds = true
+        //////////////////////////////////
+        //建立字串的formatter
+        let formatter = NumberFormatter()
+        //.currency是數字格式中的 貨幣格式
+        formatter.numberStyle = .currency
+        //使用當前本地語言的貨幣符號
+        formatter.locale = .current
+        currencyLbl.text = formatter.currencySymbol
+        //加入到textField上
+        addSubview(currencyLbl)
+    }
+    
     //Step 2. override prepareForInterfaceBuilder()
     //這是在界面上 在Interface Build 被呼叫
     override func prepareForInterfaceBuilder() {
@@ -30,6 +52,8 @@ class CurrencyTxtField: UITextField {
         layer.cornerRadius = 5.0
         //文字水平狀態
         textAlignment = .center
+        //
+        clipsToBounds = true
         
         //設定attribute的提示字 若要設定預設文字 可用attributeText
         if let p = placeholder {
